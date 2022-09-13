@@ -1,0 +1,12 @@
+# Dependency directory
+node_modules/
+
+# Environment variables file
+# .env
+
+# Outputs
+dist
+
+coverage/
+
+.nyc_output

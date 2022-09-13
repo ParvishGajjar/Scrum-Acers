@@ -1,0 +1,56 @@
+image: node:latest
+
+stages:
+  - frontend-build
+  - frontend-test
+  - frontend-build-main
+  - frontend-test-main
+
+frontend-build:
+  type: deploy
+  stage: frontend-build
+  image: ruby:latest
+  only:
+    - development
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_FRONTEND --api-key=$HEROKU_API_KEY
+
+frontend-test:
+  stage: frontend-test
+  allow_failure: true
+  only:
+    - development
+  script: 
+    - apt update
+    - apt-get update
+    - apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+    - npm install
+    - npm test
+
+frontend-build-main:
+  type: deploy
+  stage: frontend-build
+  image: ruby:latest
+  only:
+    - main
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_FRONTEND --api-key=$HEROKU_API_KEY
+
+frontend-test-main:
+  stage: frontend-test
+  allow_failure: true
+  only:
+    - main
+  script: 
+    - apt update
+    - apt-get update
+    - apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+    - npm install
+    - npm test
+
